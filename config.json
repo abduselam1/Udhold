@@ -1,0 +1,11 @@
+{
+    "database":{
+        "driver":"mysql",
+        "port":3306,
+        "host":"localhost",
+        "database":"museum",
+        "user":"root",
+        "password":""
+    },
+    "session":120
+}
