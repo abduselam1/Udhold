@@ -5,7 +5,9 @@ $get_the_json_file = file_get_contents('./config.json');
 $session_time = json_decode($get_the_json_file);
 // print_r($session_time);
 $session_time = $session_time->session;
-$session_time *=60;
+// var_dump($session_time);
+$session_time = $session_time * 60;
+// die($session_time);
 ini_set('session.cookie_lifetime',"$session_time");
 
 session_start();

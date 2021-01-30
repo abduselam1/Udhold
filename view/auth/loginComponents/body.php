@@ -9,12 +9,11 @@
           <span class="fas fa-envelope"></span>
       </div>
       </div>
-          <span style="color:red" class="error-class" role="alert">
-            <strong><?=$data['email']['message']?></strong>
-          </span>
-      <div>
-        
-      </div>
+    </div>
+    <div>
+      <span style="color:red" class="error-class" role="alert">
+              <strong><?=$data['email']['message']?></strong>
+        </span>
     </div>
     <div class="input-group mb-3">
       <input type="password" onkeypress="password_validation()" class="form-control" id="pass" placeholder="Password"  name="password" autocomplete="current-password">

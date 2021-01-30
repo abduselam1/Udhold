@@ -6,7 +6,7 @@
         </a>
       </div>
       <div class="col-6 text-right">
-        <h3>BITTAA</h3>
+        <h3>Etmu</h3>
       </div>
     </div>
   </div>

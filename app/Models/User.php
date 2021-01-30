@@ -5,10 +5,12 @@ class User extends ORM{
 
    public function __construct(){
       self::$modelClass = 'user';
+      parent::__construct();
   }
 
-   public $first_name = 'abduselam';
-   public $last_name = 'hafiz';
-   public $email = 'abduselamhafiz@gamil.com';
-   public $password = '1234567890';
+   public $id;
+   public $name;
+   public $last_name;
+   public $email;
+   public $avatar;
 }

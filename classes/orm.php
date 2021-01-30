@@ -6,7 +6,8 @@ class ORM{
     // protected $driver;
     // protected $host;
     // protected $user;
-    protected $database;
+    public static $where_value = true;
+    public static $database;
     // protected $password;
     public static $modelClass;
     protected $pdo;
@@ -19,11 +20,10 @@ class ORM{
         $user = $db_property->database->user;
         $database = $db_property->database->database;
         $password = $db_property->database->password;
-        echo '=============';
 
-        $this->$database = mysqli_connect($host,$user,$password,$database);
-        echo $this->$database;
-        if ($pdo->connect_errno) {
+        self::$database = mysqli_connect($host,$user,$password,$database);
+        // echo $this->$database;
+        if (self::$database->connect_errno) {
             echo "connection faild";
         }else{
         }
@@ -40,24 +40,96 @@ class ORM{
     
 
     public function create($array){
-        // return $array;
-        print_r(self::$modelClass);
+        $model = self::$modelClass;
+        $value_place_holder = $this->findPlaceHolders($array);
+        $values = $this->findTheActualValue($array);
+
+        $query = "INSERT INTO `$model` ($value_place_holder) VALUES ($values)";
+        // var_dump($query);
+        $row_value = self::$database->query($query);
+        if ($row_value) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public function delete(){
-        echo "deleted ".self::$modelClass."==========";
+    public function delete($id){
+        $model = self::$modelClass;
+        // var_dump($model);
+        $query = "DELETE FROM $model WHERE id=$id";
+        $delete = self::$database->query($query);
+        // var_dump($delete);
+        if ($delete == true) {
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function get(){
-        echo "geted";
+        $model = self::$modelClass;
+        $where_value = self::$where_value;
+
+        $query = "SELECT * FROM $model WHERE $where_value";
+        $row_value = self::$database->query($query);
+        // var_dump($query);
+        $return_value = [];
+        $model[0] = strtoupper($model[0]);
+        if ($row_value->num_rows>0) {
+            while ($row  = $row_value->fetch_assoc()) {
+                $user = new $model();
+                foreach ($row as $key => $value) {
+                    $user->$key = $value;
+                }
+                $return_value[] = $user;
+                // var_dump($row);
+            }
+            return $return_value;
+        }
     }
 
     public function all(){
-        echo "printed all";
+        $model = self::$modelClass;
+        $query_string =  "SELECT * FROM $model WHERE 1";
+
+        $row_value = self::$database->query($query_string);
+        $return_value = [];
+        $model[0] = strtoupper($model[0]);
+        if ($row_value->num_rows>0) {
+            while ($row  = $row_value->fetch_assoc()) {
+                $user = new $model();
+                foreach ($row as $key => $value) {
+                    $user->$key = $value;
+                }
+                $return_value[] = $user;
+                // var_dump($row);
+            }
+            return $return_value;
+        }
     }
     
-    public function update(){
-        echo "updated";
+    public function update($id,$data){
+        $model = self::$modelClass;
+        $value = $this->getUpdatedValue($data);
+        $query = "UPDATE $model set $value WHERE id = $id";
+        // var_dump($query);
+        $update = self::$database->query($query);
+        if ($update == true) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function getUpdatedValue($data){
+        $update_value = '';
+        foreach ($data as $key => $value) {
+            $update_value = $update_value.$key.'=\''.$value.'\', ';
+        }
+        $len = strlen($update_value);
+        $update_value = substr($update_value,0,$len-2);
+        return $update_value;
     }
 
     public function modelClassInstance($modelName){
@@ -65,21 +137,78 @@ class ORM{
     }
 
     public function find($id){
-
+        $model = self::$modelClass;
+        $query_string =  "SELECT * FROM $model WHERE id = '$id'";
+        // var_dump($query_string);
+        $row_value = self::$database->query($query_string);
+        $model[0] = strtoupper($model[0]);
+        if ($row_value->num_rows>0) {
+            while ($row  = $row_value->fetch_assoc()) {
+                $user = new $model();
+                foreach ($row as $key => $value) {
+                    $user->$key = $value;
+                }
+                return $user;
+                // var_dump($row);
+            }
+        }else{
+            return false;
+        }
     }
 
     public function findByEmail($email){
-        echo $this->database;
+        // echo $this->database;
         $model = self::$modelClass;
         $query_string =  "SELECT * FROM $model WHERE email = '$email'";
-        $row_value = $this->database->query($query_string);
+        // var_dump($query_string);
+        $row_value = self::$database->query($query_string);
         if ($row_value->num_rows>0) {
             while ($row  = $row_value->fetch_assoc()) {
-                return [
-                    "email" => $row["email"],
-                    "password"=> $row["password"]
-                ];
+                $user = new User();
+                foreach ($row as $key => $value) {
+                    $user->$key = $value;
+                }
+                return $user;
+                // var_dump($row);
             }
+        }else{
+            return false;
         }
     }
+
+
+    public function findPlaceHolders($array){
+        $place_holder = '';
+        foreach ($array as $key => $value) {
+            $place_holder = $place_holder.$key.',';
+        }
+        $len = strlen($place_holder);
+        $place_holder = substr($place_holder,0,$len-1);
+        return $place_holder;
+    }
+
+    public function findTheActualValue($array){
+        $values = '';
+        foreach ($array as $key => $value) {
+            $values = $values."'".$value."'".',';
+        }
+        $len = strlen($values);
+        $values = substr($values,0,$len-1);
+        return $values;
+    }
+
+    public function counts($row){
+        $model = self::$modelClass;
+        $query = "SELECT SUM($row) as sum FROM $model WHERE 1";
+        $counted_value = self::$database->query($query);
+        return $counted_value->fetch_assoc()['sum'];
+    }
+
+    public function where($attribut_name,$condition,$attribut_value){
+            // self::$where_value = "$attribut_name $condition $attribut_value";
+            self::$where_value = self::$where_value." , $attribut_name $condition $attribut_value";
+        
+        return $this;
+    }
+
 }

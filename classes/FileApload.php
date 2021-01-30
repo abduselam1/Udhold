@@ -8,10 +8,8 @@ class FileApload
         $extention = $file['type'];
         $extention = explode('/',$extention);
         $extention = $extention[1];
-
-        if (!self::validateImageExtension($extention)) {
-            return "Unknown File type";
-        }else{
+        var_dump($extention);
+        if (self::validateImageExtension($extention) == true) {
             if (!file_exists("./public/$public_path/")) {
                 mkdir("./public/$public_path/",0777);
             }
@@ -19,6 +17,8 @@ class FileApload
             move_uploaded_file($temporary_image,"./public/$public_path/".$file_name);
             // imagecopy($temporary_image,"../public/$public_path/".$file_name); 
             return "public/$public_path/".$file_name;
+        }else{
+            echo "Unknown File type";
         }
         // print_r($_FILES);
     }
