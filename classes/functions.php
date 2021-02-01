@@ -1,9 +1,9 @@
 <?php
 
-function view($new_file)
-{
-   require_once('../../view/'.$view_file.'.php'); 
-}
+// function view($new_file)
+// {
+//    require_once('../../view/'.$view_file.'.php'); 
+// }
 
 function abort($error_code)
 {
@@ -17,6 +17,9 @@ function authenticate($request){
 
     $user = new User();
     $user_values = $user->findByEmail($email);
+    if (!$user_values) {
+        return false;
+    }
     // var_dump($user_values);
     if (Hash::check($password, $user_values->password) == true) {
         $_SESSION['id'] = $user_values->id;
@@ -31,13 +34,13 @@ function authenticate($request){
 
 }
 
-function sessionOnce($name,$message){
-     return true;
-}
+// function sessionOnce($name,$message){
+//      return true;
+// }
 
-function setSesstionForAuthentication($id){
+// function setSesstionForAuthentication($id){
 
-}
+// }
 
 function getSessionForAuthentication(){
     if (isset($_SESSION['authenticated'])) {
@@ -55,9 +58,9 @@ function getSession($name){
     }
 }
 
-function destroyOneSession($name){
+// function destroyOneSession($name){
     
-}
+// }
 
 function destroySession(){
     session_destroy();
@@ -72,7 +75,7 @@ function auth(){
     }
 }
 
-function guard(){
+function guest(){
     
 }
 

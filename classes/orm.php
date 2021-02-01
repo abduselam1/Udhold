@@ -6,7 +6,7 @@ class ORM{
     // protected $driver;
     // protected $host;
     // protected $user;
-    public static $where_value = true;
+    public static $where_value = '';
     public static $database;
     // protected $password;
     public static $modelClass;
@@ -21,23 +21,14 @@ class ORM{
         $database = $db_property->database->database;
         $password = $db_property->database->password;
 
-        self::$database = mysqli_connect($host,$user,$password,$database);
+        self::$database = new mysqli($host,$user,$password,$database);
         // echo $this->$database;
         if (self::$database->connect_errno) {
             echo "connection faild";
         }else{
         }
-        // self::$pdo = new PDO("$driver:server=$host;dbname$database;charset=utf8",$user,$password);
-        // self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // echo "Connected";
     }
 
-    // public static function __callStatic($function,$params){
-    //     echo $function."<br/><hr/>";
-    //     print_r($params);
-    //     self::$function($params);
-    // }
-    
 
     public function create($array){
         $model = self::$modelClass;
@@ -70,7 +61,9 @@ class ORM{
     public function get(){
         $model = self::$modelClass;
         $where_value = self::$where_value;
-
+        // if ($where_value == '') {
+        //     $where_value = true;
+        // }
         $query = "SELECT * FROM $model WHERE $where_value";
         $row_value = self::$database->query($query);
         // var_dump($query);
@@ -98,11 +91,11 @@ class ORM{
         $model[0] = strtoupper($model[0]);
         if ($row_value->num_rows>0) {
             while ($row  = $row_value->fetch_assoc()) {
-                $user = new $model();
+                $collection = new $model();
                 foreach ($row as $key => $value) {
-                    $user->$key = $value;
+                    $collection->$key = $value;
                 }
-                $return_value[] = $user;
+                $return_value[] = $collection;
                 // var_dump($row);
             }
             return $return_value;
@@ -206,9 +199,21 @@ class ORM{
 
     public function where($attribut_name,$condition,$attribut_value){
             // self::$where_value = "$attribut_name $condition $attribut_value";
-            self::$where_value = self::$where_value." , $attribut_name $condition $attribut_value";
+            if (self::$where_value == '') {
+                self::$where_value = self::$where_value." $attribut_name $condition $attribut_value";
+            }else{
+
+                self::$where_value = self::$where_value." and $attribut_name $condition $attribut_value";
+            }
         
         return $this;
+    }
+
+    public function count($id){
+        $model = self::$modelClass;
+        $query = "SELECT COUNT(id) as count FROM $model WHERE id = $id";
+        $counted_value = self::$database->query($query);
+        return $counted_value->fetch_assoc()['count'];
     }
 
 }

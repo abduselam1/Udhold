@@ -135,10 +135,10 @@
           </li>
 
           <li class="nav-item">
-            <a href="/custom/mvc/admin/reported" class="nav-link">
+            <a href="/custom/mvc/admin/suggestion" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Reported
+                suggestion
               </p>
             </a>
           </li>

@@ -103,6 +103,47 @@
             <!--end col-3 -->
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                        <i class="fas fa-text-width"></i>
+                            What is EtMu? 
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <blockquote>
+                        <p>EtMu is a combination of Two words Ethipia and Museum so it refers to Ethiopian museum</p>
+                        <small>Form  <cite title="Source Title">Administrators</cite></small>
+                        </blockquote>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                        <i class="fas fa-text-width"></i>
+                        What we offer
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <blockquote>
+                        <p>Our system offers unlimited view of any Ethiopian culture, heritage,history and any other things that realated with Ethiopian.</p>
+                        <small> Source <cite title="Source Title">Adminisrators</cite></small>
+                        </blockquote>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+
 
     <!-- <div class="col-md-3"> -->
 

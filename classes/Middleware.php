@@ -10,7 +10,7 @@ class Middleware
         }
     }
     
-    public static function guard(){
+    public static function guest(){
         if(!isset($_SESSION['authenticated'])){
             return true;
         }else{

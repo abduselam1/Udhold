@@ -130,10 +130,10 @@
             </li>
 
             <li class="nav-item">
-                <a href="/custom/mvc/admin/reported" class="nav-link">
+                <a href="/custom/mvc/admin/suggestion" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
-                    Reported
+                    suggestion
                 </p>
                 </a>
             </li>
@@ -162,9 +162,14 @@
         <h3>Create new secret Contents</h3>
         </div>
     </div>
-        <form action="/custom/mvc/admin/secret" class="" method="post" enctype="multipart/form-data">
-            <?php include_once 'components/create-body.php'; ?>
-        </form>
+    <section class="content">
+        <div class="container-fluid">
+            <form action="/custom/mvc/admin/secret" class="" method="post" enctype="multipart/form-data">
+                <?php include_once 'components/create-body.php'; ?>
+                <button type="submit" id="secret-submit" class="btn btn-outline-success ">Post</button>
+            </form>
+        </div>
+    </section>
     </div>
   <footer class="main-footer">
     <strong>Copyright &copy; 2021 Etmu <a href="http://localhost/custom/mvc/home">Etmu.org</a>.</strong>

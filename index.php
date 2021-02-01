@@ -11,7 +11,7 @@ $session_time = $session_time * 60;
 ini_set('session.cookie_lifetime',"$session_time");
 
 session_start();
-include "./classes/connection.php";
+// include "./classes/connection.php";
 
 require_once('./Routes.php');
 // require_once('vendor/autoload.php');

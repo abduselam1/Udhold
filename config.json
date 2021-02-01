@@ -7,8 +7,5 @@
         "user":"root",
         "password":""
     },
-    "session":300,
-    "abdu":{
-        "value":2345
-    }
+    "session":300
 }

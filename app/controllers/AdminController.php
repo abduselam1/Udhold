@@ -26,30 +26,43 @@ class AdminController extends Controller
     }
 
     public function post($request){
-        $new_post = new Post();
-        $catagory_id = $request['catagory'];
-        $new_post = $new_post->create([
-            'title' => $request['title'],
-            'content' =>$request['content'],
-            'catagory_id' => $catagory_id,
-            'avatar' => FileApload::storeImage($request['postImage'],"image/$catagory_id")
-        ]);
-        if ($new_post == true) {
-            redirect('/custom/mvc/admin/posts','success|Your content is succssfully posted');
+        if (trim($request['title']) == '' || trim($request['content']) == '' || $request['catagory']  == '') {
+            redirect('/custom/mvc/admin/posts','error|You have to fill all of the fields');
         }else{
-            // var_dump($new_post);
+            $new_post = new Post();
+            $catagory_id = $request['catagory'];
+            $stored_value = FileApload::storeImage($request['postImage'],"image/$catagory_id");
+            if ($stored_value =='error') {
+                redirect('/custom/mvc/admin/posts','error|somethings gone wrong please try again');
+            }else{
+                $new_post = $new_post->create([
+                    'title' => $request['title'],
+                    'content' =>$request['content'],
+                    'catagory_id' => $catagory_id,
+                    'avatar' => $stored_value
+                ]);
+                if ($new_post == true) {
+                    redirect('/custom/mvc/admin/posts','success|Your content is succssfully posted');
+                }else{
+                    redirect('/custom/mvc/admin/posts','error|somethings gone wrong please try again');
+                }
+            }
         }
+        
+        
     }
 
     public function findPost($id){
-        var_dump($id);
+        $user = auth();
+
+        $post = new Post();
+        $post = $post->find($id);
+        parent::view('admin/show',compact('post','user'));
     }
 
     public function editPost($id){
-        // var_dump($id);
         $post = new Post();
         $post = $post->find($id);
-        // var_dump($post);
         $user = auth();
         $catagory = new Catagory();
         $catagory = $catagory->all();
@@ -61,17 +74,29 @@ class AdminController extends Controller
     {
         $post = new Post();
         $catagory_id = $request['catagory'];
-        $updated = $post->update($id,[
-            'title' => $request['title'],
-            'content' =>$request['content'],
-            'catagory_id' => $catagory_id,
-            'avatar' => FileApload::storeImage($request['postImage'],"image/$catagory_id")
-        ]);
+        $update;
+        if ($request['postImage']['error'] > 0) {
+            $updated = $post->update($id,[
+                'title' => $request['title'],
+                'content' =>$request['content'],
+                'catagory_id' => $catagory_id,
+            ]);
+        }else{
+            $stored_value = FileApload::storeImage($request['postImage'],"image/$catagory_id");
+            if ($stored_value !='error') {
+                $updated = $post->update($id,[
+                    'title' => $request['title'],
+                    'content' =>$request['content'],
+                    'catagory_id' => $catagory_id,
+                    'avatar' => $stored_value
+                ]); 
+            }
+        }
 
         if ($updated == true) {
             redirect('/custom/mvc/admin/posts','success|You have successfuly Updated');
         }else{
-            var_dump($updated);
+            redirect('/custom/mvc/admin/posts','error|something goes wrong please try agin later');
         }
     }
 
@@ -118,20 +143,29 @@ class AdminController extends Controller
 
         // var_dump($request/);
         // FileApload::storeImage($request['postImage'],"image/");
-        $new_secret = new Secret();
-        $catagory_id = $request['catagory'];
-        $new_secret = $new_secret->create([
-            'title' => $request['title'],
-            'body' =>$request['content'],
-            'catagory_id' => $catagory_id,
-            'image' => FileApload::storeImage($request['postImage'],"image/$catagory_id")
-        ]);
-        if ($new_secret == true) {
-            redirect('/custom/mvc/admin/secrets','success|Your content is succssfully posted');
+        if (trim($request['title']) == '' || trim($request['content']) || $request['catagory']) {
+            redirect('/custom/mvc/admin/secrets','error|You have to fill all the values');
         }else{
-            redirect('/custom/mvc/admin/secrets','error|somethig is gone wrong please try again');
+            $stored_value = FileApload::storeImage($request['postImage'],"image/$catagory_id");
+            if ($stored_value == 'error') {
+                redirect('/custom/mvc/admin/secrets','error|somethig is gone wrong please try again');
+            }else{
+                $new_secret = new Secret();
+                $catagory_id = $request['catagory'];
+                $new_secret = $new_secret->create([
+                    'title' => $request['title'],
+                    'body' =>$request['content'],
+                    'catagory_id' => $catagory_id,
+                    'image' => $stored_value
+                ]);
+                if ($new_secret == true) {
+                    redirect('/custom/mvc/admin/secrets','success|Your content is succssfully posted');
+                }else{
+                    redirect('/custom/mvc/admin/secrets','error|somethig is gone wrong please try again');
+                }
+            }
+    
         }
-
     }
 
     public function findSecret($id){
@@ -155,25 +189,33 @@ class AdminController extends Controller
     public function updateSecret($request, $id){
 
         $secret = new Secret();
-        if ($request['postImage']['error'] > 0) {
-            $updated = $secret->update($id,[
-                'title' => $request['title'],
-                'catagory' => $request['catagory'],
-                'body' => $request['content']
-            ]);
+        $updated;
+        if (trim($request['title']) == '' || trim($request['catagory']) == '' || trim($request['content']) == '' ) {
+            redirect('/custom/mvc/admin/secrets','error|You have to fill all the values');
         }else{
-            $catagory_id = $request['catagory'];
-            $updated = $secret->update($id,[
-                'title' => $request['title'],
-                'body' => $request['content'],
-                'image' => FileApload::storeImage($request['postImage'],"image/$catagory_id")
-            ]);
-        }
-
-        if ($updated == true) {
-            redirect('/custom/mvc/admin/secrets','success|You have succssfully updated');
-        }else{
-            redirect('/custom/mvc/admin/secrets','error|somethig is gone wrong please try again');
+            if ($request['postImage']['error'] > 0) {
+                $updated = $secret->update($id,[
+                    'title' => $request['title'],
+                    'catagory' => $request['catagory'],
+                    'body' => $request['content']
+                ]);
+            }else{
+                $catagory_id = $request['catagory'];
+                $stored_value = FileApload::storeImage($request['postImage'],"image/$catagory_id");
+                if ($stored_value != 'error') {
+                    $updated = $secret->update($id,[
+                        'title' => $request['title'],
+                        'body' => $request['content'],
+                        'image' => $stored_value
+                    ]); 
+                }
+            }
+    
+            if ($updated == true) {
+                redirect('/custom/mvc/admin/secrets','success|You have succssfully updated');
+            }else{
+                redirect('/custom/mvc/admin/secrets','error|somethig is gone wrong please try again');
+            }
         }
 
     }
@@ -209,14 +251,23 @@ class AdminController extends Controller
 
     public function Catagory($request){
         $new_catagory = new Catagory();
-        $new_catagory = $new_catagory->create([
-            'name' => $request['name'],
-            'img_path' => FileApload::storeImage($request['catagoryImage'],"image/catagories")
-        ]);
-        if ($new_catagory == true) {
-            redirect('/custom/mvc/admin/catagories','success|Your Catagory is succssfully added');
+        if (trim($request['name']) == '') {
+            redirect('/custom/mvc/admin/catagories','error|You have to fill the name');
         }else{
-            redirect('/custom/mvc/admin/catagories','error|somethig is gone wrong please try again');
+            $stored_value = FileApload::storeImage($request['catagoryImage'],"image/catagories");
+            if ($stored_value == 'error') {
+                redirect('/custom/mvc/admin/catagories','error|somethig is gone wrong please try again');
+            }else{
+                $new_catagory = $new_catagory->create([
+                    'name' => $request['name'],
+                    'img_path' => $stored_value
+                ]);
+                if ($new_catagory == true) {
+                    redirect('/custom/mvc/admin/catagories','success|Your Catagory is succssfully added');
+                }else{
+                    redirect('/custom/mvc/admin/catagories','error|somethig is gone wrong please try again');
+                }
+            }
         }
     }
 
@@ -231,18 +282,22 @@ class AdminController extends Controller
 
     public function updateCatagory($request,$id){
         $catagory = new Catagory();
+        $update;
         if ($request['catagoryImage']['error']>0) {
             $update = $catagory->update($id,[
                 'name' => $request['name']
             ]);
         }else{
-            $update = $catagory->update($id,[
-                'name' => $request['name'],
-                'img_path' => FileApload::storeImage($request['catagoryImage'],"image/catagories")
-            ]);
+            $stored_value = FileApload::storeImage($request['catagoryImage'],"image/catagories");
+            if ($stored_value != 'error') {
+                $update = $catagory->update($id,[
+                    'name' => $request['name'],
+                    'img_path' => $stored_value
+                ]);
+            }
         }
 
-        if ($catagory == true) {
+        if ($update == true) {
             redirect('/custom/mvc/admin/catagories','success|Your Catagory is succssfully Updated');
         }else{
             redirect('/custom/mvc/admin/catagories','error|somethig is gone wrong please try again');
@@ -258,5 +313,16 @@ class AdminController extends Controller
         }else{
             redirect('/custom/mvc/admin/catagories','error|Something goes wrong please try again later');
         }
+    }
+
+    public function shwoSuggestion(){
+
+        $user = auth();
+
+        $suggestion = new Customer();
+        $suggestion = $suggestion->all();
+
+        parent::view('admin/suggestion',compact('user','suggestion'));
+
     }
 }

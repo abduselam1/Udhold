@@ -23,7 +23,7 @@
         </div>
       </div>
           <span style="color:red"  class="error-class" role="alert">
-              <strong><?=$data['password']['message']?></strong>
+              
           </span>
       <div>
         

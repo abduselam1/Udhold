@@ -17,14 +17,14 @@ class Hash{
     public static function check($value, $hashedValue){
         // $value = self::$pre.$value.self::$post;
         $hashed = hash('sha256',$value);
-        hash('sha256',$value);
+        // hash('sha256',$value);
         // print_r($hashedValue);
         // echo "<br/>";
         // print_r($hashed);
         
-        if ($hashed == $hashedValue) {
-            # code...
-        }
+        // if ($hashed == $hashedValue) {
+        //     # code...
+        // }
         return $hashed == $hashedValue ? true : false;
 
     }

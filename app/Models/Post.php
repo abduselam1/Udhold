@@ -7,14 +7,5 @@ class Post extends ORM
         self::$modelClass = 'post';
         parent::__construct();
     }
-
-
-    // public $id;
-    // public $title;
-    // public $content;
-    // public $catagory;
-    // public $avatar;
-    // public $like;
-    // public $dislike;
     
 }

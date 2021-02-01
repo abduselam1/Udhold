@@ -130,10 +130,10 @@
           </li>
 
           <li class="nav-item">
-            <a href="/custom/mvc/admin/reported" class="nav-link">
+            <a href="/custom/mvc/admin/suggestion" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Reported
+                suggestion
               </p>
             </a>
           </li>
@@ -168,8 +168,9 @@
                     <?php include_once('components/dashboard/content-info.php'); ?>
                 </div><!-- end of col-12 content info -->
                 <div class="col-12">
-                  <form action="/custom/mvc/admin/post" method="post" enctype="">
+                  <form action="/custom/mvc/admin/post" id="post-dashboard" method="post" enctype="multipart/form-data">
                     <?php include_once('components/dashboard/create-new-post.php'); ?>
+                    <button type="submit" id="post-dashboard" class="btn btn-outline-success ">Post</button>
                   </form>
                     
                 </div>

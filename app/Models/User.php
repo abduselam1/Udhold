@@ -7,10 +7,4 @@ class User extends ORM{
       self::$modelClass = 'user';
       parent::__construct();
   }
-
-   public $id;
-   public $name;
-   public $last_name;
-   public $email;
-   public $avatar;
 }

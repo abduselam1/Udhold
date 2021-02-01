@@ -8,14 +8,22 @@ Route::get('home','PublicController@index');
 Route::get('catagories/{catagory_name}','PublicController@showByCatagories');
 // Route::post('file-check','UserController@fileTest');
 
-Route::get('about','UserController@about');
+// Route::post('search','PublicController@search');
 
-Route::get('login', "LoginController@showLoginForm",'guard');
+Route::get('contact-us','PublicController@contactUs');
+
+Route::post('contact-us','PublicController@sendContact');
+
+Route::get('devs','PublicController@devs');
+
+Route::get('about','PublicController@about');
+
+Route::get('login', "LoginController@showLoginForm",'guest');
 
 Route::post('logout', "LoginController@logout",'auth');
 
 
-Route::post('login-handler',"LoginController@login",'guard');
+Route::post('login-handler',"LoginController@login",'guest');
 
 Route::get('model-test','UserController@testModel');
 
@@ -29,7 +37,7 @@ Route::get('admin/posts','AdminController@showPost','auth');
 
 Route::get('admin/create-post', 'AdminController@showPostForm','auth');
 
-// Route::post('admin/post','AdminController@post','auth');
+Route::post('admin/post','AdminController@post','auth');
 
 Route::get('admin/post/{id}','AdminController@findPost','auth');
 
@@ -70,7 +78,7 @@ Route::post('admin/secret/{id}/update', 'AdminController@updateSecret', 'auth');
 
 Route::get('admin/secret/{id}/delete', 'AdminController@deleteSecret', 'auth');
 
-
+Route::get('admin/suggestion','AdminController@shwoSuggestion');
 
 
 if(Route::$flag === false) {

@@ -18,7 +18,7 @@ class FileApload
             // imagecopy($temporary_image,"../public/$public_path/".$file_name); 
             return "public/$public_path/".$file_name;
         }else{
-            echo "Unknown File type";
+            return 'error';
         }
         // print_r($_FILES);
     }

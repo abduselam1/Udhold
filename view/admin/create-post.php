@@ -130,10 +130,10 @@
           </li>
 
           <li class="nav-item">
-            <a href="/custom/mvc/admin/reported" class="nav-link">
+            <a href="/custom/mvc/admin/suggestion" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Reported
+                suggestion
               </p>
             </a>
           </li>
@@ -166,8 +166,10 @@
                     <div class="col-12 mt-2">
 
                 <div class="col-12">
-                  <form action="post" method="post">
+                  <form action="post" method="post" enctype="multipart/form-data">
                     <?php include_once('components/dashboard/create-new-post.php'); ?>
+                    <button type="submit" id="post-dashboard" class="btn btn-outline-success ">Post</button>
+
                   </form>
                 </div>
             </div><!--end of the first row-->

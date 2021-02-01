@@ -10,11 +10,11 @@ class Route
     protected static $getRoutes = [];
     protected static $postRoutes = [];
 
-    public static function set($route_name, $function){
-        if ($route_name == $_GET['url']) {
-            return $function->__invoke();
-        }
-    } 
+    // public static function set($route_name, $function){
+    //     if ($route_name == $_GET['url']) {
+    //         return $function->__invoke();
+    //     }
+    // } 
 
     public static function get($route_name,$controllerClassAndMethod,$middleware = '')
     {
@@ -134,7 +134,7 @@ class Route
     //         }else{
     //             if ($middleware == 'auth') {
     //                 redirect('login');
-    //             }else if($middleware == 'guard'){
+    //             }else if($middleware == 'guest'){
     //                 header("location:admin/dashboard");
     //             }else{
     //                 print_r('error occurd');
@@ -150,7 +150,7 @@ class Route
     public static function redirectIfForMiddleware($middleware){
         if ($middleware == 'auth') {
             redirect('/custom/mvc/login');
-        }else if($middleware == 'guard'){
+        }else if($middleware == 'guest'){
             header("location:admin/dashboard");
         }else{
             print_r('error occurd');

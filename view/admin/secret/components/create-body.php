@@ -8,11 +8,14 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="postImage">
+                            <label for="picture">
                                 
                                 <?php if(isset($data['secret'])){echo "<img src=\"/custom/mvc/".$data['secret']->image."\" width=\"200\" alt=\"error\">";}else{ echo  "<i class=\"fas fa-plus\" style=\"width:50%;height:50%s\"></i>";}?>
                             </label>
-                            <input type="file" id="postImage" name="postImage" style="display:none">
+                            <input type="file" id="picture" name="postImage" class="form-control" id="picture" style="display:none">
+                            <div class="invalid-feedback">
+                                Invalid Image file
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -20,6 +23,7 @@
                             <select name="catagory" id="catagory">
                                 <option value="">Select the catagory</option> 
                                 <?php foreach ($data['catagory'] as $catagory) {
+                                    
                                     if (isset($data['secret'])) {
                                         if ($data['secret']->catagory_id == $catagory->id) {
                                             echo "<option selected value=\"$catagory->id\">$catagory->name</option>";
@@ -27,7 +31,6 @@
                                             echo "<option value=\"$catagory->id\">$catagory->name</option>";
                                         }
                                     }
-                                    echo "<option value=\"$catagory->id\">$catagory->name</option>";
                                 } ?>
                             </select>
                         </div>
@@ -50,10 +53,9 @@
                         </div>
                     </div><!--end of card-body -->
                 </div><!--end of card-body -->
-                <button type="submit" class="btn btn-outline-success ">Post</button>
+                
             </div>
             </div>
         </div>
         
-    </div>
-</section>
+
