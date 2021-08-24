@@ -217,7 +217,7 @@
     var id = $(button);
     id = id.attr('id')
     var modal = $(this);
-    var form = modal.find('a');
+    var form = modal.find('button');
     form.attr('href','/custom/mvc/admin/secret/'+id+'/delete');
   });
 </script>

@@ -1,7 +1,7 @@
 <?php
 
 // require_once('classes/Route.php');
-//  first parameter=route name and ther second pramater is controller , and the third is middleware
+//  first parameter=route name and the second pramater is controller , and the third is middleware
 
 Route::get('home','PublicController@index');
 
